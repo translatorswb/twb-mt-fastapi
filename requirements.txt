@@ -7,3 +7,5 @@ nltk==3.8.1
 sentencepiece==0.1.99
 torch==2.1.0
 transformers==4.34.1
+tenacity==8.2.2
+prometheus-fastapi-instrumentator==5.9.1
