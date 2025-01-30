@@ -12,7 +12,11 @@ from app.models.v1.translate import (
 )
 from app.utils.translate import translate_text
 from app.constants import MULTIMODALCODE
+import re
+from transformers import pipeline
 
+# Initialize the translation pipeline
+translator = pipeline("translation", model="facebook/nllb-200-3.3B", src_lang='eng_Latn', tgt_lang='kin_Latn')
 translate_v1 = APIRouter(prefix='/api/v1/translate')
 
 DEVDEBUG = True
@@ -108,3 +112,46 @@ async def languages() -> LanguagesResponse:
     return LanguagesResponse(
         languages=config.language_codes, models=config.languages_list
     )
+
+def remove_markdown(text):
+    """Remove markdown formatting from text."""
+    text = re.sub(r'(\*\*|__)(.*?)\1', r'\2', text)  # Bold
+    text = re.sub(r'(\*|_)(.*?)\1', r'\2', text)  # Italics
+    text = re.sub(r'\[(.*?)\]\((.*?)\)', r'\1', text)  # Links
+    text = re.sub(r'`(.*?)`', r'\1', text)  # Inline code
+    text = re.sub(r'~~(.*?)~~', r'\1', text)  # Strikethrough
+    return text
+
+def reapply_markdown(original, modified):
+    """Reapply markdown formatting after translation."""
+    pattern = r'(\*\*.*?\*\*|\*.*?\*|__.*?__|_.*?_|\[.*?\]\(.*?\)|`.*?`|~~.*?~~)'
+    matches = re.finditer(pattern, original)
+
+    result = ""
+    cursor = 0
+
+    for match in matches:
+        start, end = match.span()
+        token = match.group()
+        if cursor < start:
+            result += modified[cursor:start]
+        stripped = remove_markdown(token).strip()
+        translated_stripped = translator(stripped)[0]['translation_text']
+        result += token.replace(stripped, translated_stripped)
+        cursor = end
+
+    if cursor < len(original):
+        result += modified[cursor:]
+    
+    return result
+
+def process_text(text):
+    """Remove markdown, translate, and reapply markdown formatting."""
+    plain_text = remove_markdown(text)
+    translated_text = translator(plain_text)[0]['translation_text']
+    return reapply_markdown(text, translated_text)
+
+@translate_v1.post('/markdown', status_code=status.HTTP_200_OK)
+async def translate_markdown(request: TranslationRequest) -> TranslationResponse:
+    translated_markdown = process_text(request.text)
+    return TranslationResponse(translation=translated_markdown)
