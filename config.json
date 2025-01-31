@@ -9,7 +9,7 @@
       "model_type": "nllb",
       "checkpoint_id": "nllb-200-distilled-600M",
       "multilingual": true,
-      "load": true,
+      "load": false,
       "sentence_split": "nltk",
       "supported_pairs": ["en-rw", "en-fr", "fr-rw", "fr-en","rw-en","rw-fr"],
       "pipeline": {
@@ -36,8 +36,7 @@
       "src_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "tgt_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "multilingual": true,
-      "load": false,
-      "alt": "du_en_kin",
+      "load": true,
       "sentence_split": "nltk",
       "supported_pairs": ["en-rw", "rw-en"],
       "pipeline": {
@@ -47,7 +46,7 @@
         "translate": true,
         "recase": true
       },
-      "lang_code_map": {"en": "eng_Latn", "tr": "tur_Latn", 
+      "lang_code_map": {"en": "eng_Latn", "tr": "tur_Latn",
                         "fr": "fra_Latn", "rw": "kin_Latn"}
     },
     {
@@ -57,7 +56,7 @@
       "src_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "tgt_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "multilingual": true,
-      "load": true,
+      "load": false,
       "sentence_split": "nltk",
       "supported_pairs": ["en-rw", "rw-en"],
       "pipeline": {
