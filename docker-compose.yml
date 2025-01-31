@@ -11,7 +11,7 @@ services:
       - 8001:8000
     volumes:
       - .:/app
-      - ../translation-models:/app/models
+      - $HOME/translation-models:/app/models
       - ./config.json:/app/config.json
     security_opt:
       - seccomp:unconfined
