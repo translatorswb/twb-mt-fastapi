@@ -2,25 +2,16 @@
   "languages": {
     "en": "English",
     "fr": "French",
-    "de": "German",
-    "ha": "Hausa",
-    "apc":"Levantine Arabic",
-    "sw_cd":"Congolese Swahili",
-    "ti":"Tigrinya",
-    "uk":"Ukranian",
-    "kr": "Kanuri",
-    "ff": "Fulfulde",
-    "tr": "Turkish"
+    "rw": "Kinyarwanda"
   },
   "models": [
     {
       "model_type": "nllb",
       "checkpoint_id": "nllb-200-distilled-600M",
       "multilingual": true,
-      "alt": "nllb",
       "load": false,
       "sentence_split": "nltk",
-      "supported_pairs": ["en-kr", "en-fr", "en-ff", "en-ha"],
+      "supported_pairs": ["en-rw", "en-fr", "fr-rw", "fr-en","rw-en","rw-fr"],
       "pipeline": {
           "translate": true
       },
@@ -31,7 +22,6 @@
       "model_type": "m2m100",
       "checkpoint_id": "m2m100_418M",
       "multilingual": true,
-      "alt":"m2m",
       "load": false,
       "sentence_split": "nltk",
       "supported_pairs": ["en-tr"],
@@ -41,8 +31,8 @@
     },
     {
       "model_type": "ctranslator2",
-      "model_path": "nllb-200-distilled-600M-int8",
-      "alt": "education",
+      "model_path": "DigitalUmuganda/Quantized_Mbaza_MT_v1",
+      "alt": "",
       "src_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "tgt_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "multilingual": true,
@@ -56,7 +46,7 @@
         "translate": true,
         "recase": true
       },
-      "lang_code_map": {"en": "eng_Latn", "tr": "tur_Latn", 
+      "lang_code_map": {"en": "eng_Latn", "tr": "tur_Latn",
                         "fr": "fra_Latn", "rw": "kin_Latn"}
     },
     {
@@ -66,7 +56,7 @@
       "src_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "tgt_sentencepiece_model": "flores200_sacrebleu_tokenizer_spm.model",
       "multilingual": true,
-      "load": true,
+      "load": false,
       "sentence_split": "nltk",
       "supported_pairs": ["en-rw", "rw-en"],
       "pipeline": {

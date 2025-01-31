@@ -1,4 +1,4 @@
-#FROM python:3.8-slim
+# If you intend to run your MT API on a GPU server it is advisable to using this Dockerfile 
 FROM nvidia/cuda:11.5.2-devel-ubuntu20.04
 # Project setup
 
@@ -13,9 +13,7 @@ RUN apt-get update && \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-#RUN apt install apt install nvidia-cuda-toolkit
 
-#RUN apt-get install cuda-cudart-11-8
 RUN apt-get update &&  apt-get install -y --no-install-recommends\
     python3.8-venv
 
@@ -26,11 +24,6 @@ RUN pip install  --quiet --upgrade pip && \
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt \
     && rm -rf /root/.cache/pip
-
-#Custom translator requirements
-#COPY ./app/customtranslators/<customtranslatorname>/requirements.txt /app/customrequirements.txt
-#RUN pip install -r /app/customrequirements.txt \
-#    && rm -rf /root/.cache/pip
 
 COPY . /app
 WORKDIR /app
